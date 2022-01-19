@@ -1,8 +1,12 @@
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import "../App.css";
+import { todosAdd } from "../features/todosSlice";
+
 
 const AddTodo = () => {
+  const dispatch = useDispatch();
   const [todo, setTodo] = useState({
     task: "",
     isComplete: false,
@@ -12,6 +16,8 @@ const AddTodo = () => {
     e.preventDefault();
 
     // dispatch
+    // alert(JSON.stringify(todo));
+    dispatch(todosAdd(todo));
 
     setTodo({
       task: "",
