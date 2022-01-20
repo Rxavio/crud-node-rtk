@@ -36,6 +36,7 @@ const ListTodos = ({ setTodo }) => {
           <Button
             variant="outlined"
             size="small"
+            onClick={() => setTodo({ ...todo })}
             sx={{
               fontFamily: "'Abel', 'sansSerif'",
             }}

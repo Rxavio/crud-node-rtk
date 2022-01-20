@@ -1,26 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+// import { useState } from "react";
 import { Button, Alert, CircularProgress } from "@mui/material";
 import "../App.css";
-import { todosAdd } from "../features/todosSlice";
+import { todosAdd, updateTodo } from "../features/todosSlice";
 
-
-const AddTodo = () => {
+const AddTodo = ({ todo, setTodo }) => {
   const dispatch = useDispatch();
   const todosState = useSelector((state) => state.todosState);
-
-  const [todo, setTodo] = useState({
-    task: "",
-    isComplete: false,
-  });
+  // const [todo, setTodo] = useState({
+  //   task: "",
+  //   isComplete: false,
+  // });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // dispatch
+    if (todo._id) {
+      dispatch(updateTodo(todo));
+    } else {
+      const newTodo = {
+        ...todo,
+        date: new Date(),
+      };
+      // dispatch
     // alert(JSON.stringify(todo));
-    dispatch(todosAdd(todo));
-
+      dispatch(todosAdd(newTodo));
+    }
     setTodo({
       task: "",
       isComplete: false,
@@ -49,9 +54,12 @@ const AddTodo = () => {
           {/* Add Task */}
           {todosState.addTodoStatus === "pending" ? (
             <CircularProgress size={24} color="secondary" />
-          ): (
+          ): todo._id ? (
+            "Update Task"
+          ) : (
             "Add Task"
           )}
+          {/* new or update accordingly */}
         </Button>
 
         {todosState.addTodoStatus === "rejected" ? (
@@ -60,8 +68,13 @@ const AddTodo = () => {
         {todosState.addTodoStatus === "success" ? (
           <Alert severity="success">Task Added...</Alert>
         ) : null}
-       
 
+        {todosState.updateTodoStatus === "rejected" ? (
+          <Alert severity="error">{todosState.updateTodoError}</Alert>
+        ) : null}
+        {todosState.updateTodoStatus === "success" ? (
+          <Alert severity="success">Task Updated...</Alert>
+        ) : null}
 
       </form>
     </>
