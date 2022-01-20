@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { getTodos } from "../features/todosSlice";
 import moment from "moment";
 import { CircularProgress, Card } from "@mui/material";
+import Button from "@mui/material/Button";
 import "../App.css";
 
 const ListTodos = ({ setTodo }) => {
@@ -31,6 +32,16 @@ const ListTodos = ({ setTodo }) => {
           >
           <h3>{todo.task}</h3>
           <p>Added: {moment(todo.date).fromNow()}</p>
+
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              fontFamily: "'Abel', 'sansSerif'",
+            }}
+          >
+            Update
+          </Button>
         </Card>
       ))}
     </div>
