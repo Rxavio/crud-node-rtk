@@ -32,7 +32,7 @@ const ListTodos = ({ setTodo }) => {
           >
           <h3>{todo.task}</h3>
           <p>Added: {moment(todo.date).fromNow()}</p>
-
+         {/* Update */}
           <Button
             variant="outlined"
             size="small"
@@ -41,6 +41,18 @@ const ListTodos = ({ setTodo }) => {
             }}
           >
             Update
+          </Button>
+          {/* delete */}
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            sx={{
+              marginLeft: "0.7rem",
+              fontFamily: "'Abel', 'sansSerif'",
+            }}
+            >
+            Delete
           </Button>
         </Card>
       ))}
