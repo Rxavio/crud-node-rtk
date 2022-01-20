@@ -1,12 +1,14 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Alert, CircularProgress } from "@mui/material";
 import "../App.css";
 import { todosAdd } from "../features/todosSlice";
 
 
 const AddTodo = () => {
   const dispatch = useDispatch();
+  const todosState = useSelector((state) => state.todosState);
+
   const [todo, setTodo] = useState({
     task: "",
     isComplete: false,
@@ -44,8 +46,23 @@ const AddTodo = () => {
             fontFamily: "'Abel', 'sansSerif'",
           }}
         >
-          Add Task
+          {/* Add Task */}
+          {todosState.addTodoStatus === "pending" ? (
+            <CircularProgress size={24} color="secondary" />
+          ): (
+            "Add Task"
+          )}
         </Button>
+
+        {todosState.addTodoStatus === "rejected" ? (
+          <Alert severity="error">{todosState.addTodoError}</Alert>
+        ) : null}
+        {todosState.addTodoStatus === "success" ? (
+          <Alert severity="success">Task Added...</Alert>
+        ) : null}
+       
+
+
       </form>
     </>
   );
