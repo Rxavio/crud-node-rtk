@@ -27,13 +27,26 @@ export const todosAdd = createAsyncThunk(
     }
   }
 );
-
+//get all todos list
+export const getTodos = createAsyncThunk(
+  "todos/getTodos",
+  async (id = null, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(baseURL + "todos");
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
 
 const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {},
   extraReducers: {
+     //post
     [todosAdd.pending]: (state, action) => {
       return {
         ...state,
@@ -75,11 +88,49 @@ const todosSlice = createSlice({
         updateTodoError: "",
       };
     },
-    
-  },
+    //get
+    [getTodos.pending]: (state, action) => {
+      return {
+        ...state,
+        addTodoStatus: "",
+        addTodoError: "",
+        getTodosStatus: "pending",
+        getTodosError: "",
+        deleteTodoStatus: "",
+        deleteTodoError: "",
+        updateTodoStatus: "",
+        updateTodoError: "",
+      };
+    },
+    [getTodos.fulfilled]: (state, action) => {
+      return {
+        ...state,
+        todos: action.payload,
+        addTodoStatus: "",
+        addTodoError: "",
+        getTodosStatus: "success",
+        getTodosError: "",
+        deleteTodoStatus: "",
+        deleteTodoError: "",
+        updateTodoStatus: "",
+        updateTodoError: "",
+      };
+    },
+    [getTodos.rejected]: (state, action) => {
+      return {
+        ...state,
+        addTodoStatus: "",
+        addTodoError: "",
+        getTodosStatus: "rejected",
+        getTodosError: action.payload,
+        deleteTodoStatus: "",
+        deleteTodoError: "",
+        updateTodoStatus: "",
+        updateTodoError: "",
+      };
+    },
  
-  
-    
+  },  
 });
 
 export default todosSlice.reducer;
