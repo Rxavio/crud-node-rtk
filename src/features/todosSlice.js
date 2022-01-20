@@ -58,6 +58,19 @@ export const updateTodo = createAsyncThunk(
     }
   }
 );
+//delete todo
+export const deleteTodo = createAsyncThunk(
+  "todos/deleteTodo",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(baseURL + "todos/" + id);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
 
 const todosSlice = createSlice({
   name: "todos",
@@ -191,9 +204,50 @@ const todosSlice = createSlice({
         updateTodoError: action.payload,
       };
     },
-
- 
+    //delete
+    [deleteTodo.pending]: (state, action) => {
+      return {
+        ...state,
+        addTodoStatus: "",
+        addTodoError: "",
+        getTodosStatus: "",
+        getTodosError: "",
+        deleteTodoStatus: "pending",
+        deleteTodoError: "",
+        updateTodoStatus: "",
+        updateTodoError: "",
+      };
+    },
+    [deleteTodo.fulfilled]: (state, action) => {
+      const currentTodos = state.todos.filter(
+        (todo) => todo._id !== action.payload._id
+      );
+      return {
+        ...state,
+        todos: currentTodos,
+        addTodoStatus: "",
+        addTodoError: "",
+        getTodosStatus: "",
+        getTodosError: "",
+        deleteTodoStatus: "success",
+        deleteTodoError: "",
+        updateTodoStatus: "",
+        updateTodoError: "",
+      };
+    },
+    [deleteTodo.rejected]: (state, action) => {
+      state = {
+        ...state,
+        addTodoStatus: "",
+        addTodoError: "",
+        getTodosStatus: "",
+        getTodosError: "",
+        deleteTodoStatus: "rejected",
+        deleteTodoError: action.payload,
+        updateTodoStatus: "",
+        updateTodoError: "",
+      };
+    },
   },  
 });
-
 export default todosSlice.reducer;

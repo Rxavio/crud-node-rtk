@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getTodos } from "../features/todosSlice";
+import { deleteTodo, getTodos } from "../features/todosSlice";
 import moment from "moment";
 import { CircularProgress, Card } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -15,6 +15,9 @@ const ListTodos = ({ setTodo }) => {
     dispatch(getTodos());
   }, [dispatch]);
 
+  const handleDelete = (id) => {
+    dispatch(deleteTodo(id));
+  };
 
   return (
     <div>
@@ -36,10 +39,10 @@ const ListTodos = ({ setTodo }) => {
           <Button
             variant="outlined"
             size="small"
-            onClick={() => setTodo({ ...todo })}
             sx={{
               fontFamily: "'Abel', 'sansSerif'",
             }}
+            onClick={() => setTodo({ ...todo })}
           >
             Update
           </Button>
@@ -52,6 +55,7 @@ const ListTodos = ({ setTodo }) => {
               marginLeft: "0.7rem",
               fontFamily: "'Abel', 'sansSerif'",
             }}
+            onClick={() => handleDelete(todo._id)}
             >
             Delete
           </Button>
